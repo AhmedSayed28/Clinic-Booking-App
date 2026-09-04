@@ -63,9 +63,9 @@
       const errors = {};
       if (!/^[A-Za-z ]{3,50}$/.test(values.name.trim()))
         errors.name = "Use 3–50 alphabetic characters and spaces only.";
-      if (!/^(010|011|012|015)\d{8}$/.test(values.phone))
+      if (!/^(010|011|012|013|015)\d{8}$/.test(values.phone))
         errors.phone =
-          "Enter an 11-digit Egyptian number starting 010, 011, 012, or 015.";
+          "Enter an 11-digit Egyptian number starting 010, 011, 012, 013, or 015.";
       else if (users.some((u) => u.phone === values.phone))
         errors.phone = "This phone number is already registered.";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
@@ -77,10 +77,10 @@
       if (
         !values.dateOfBirth ||
         new Date(`${values.dateOfBirth}T00:00:00`) >= new Date() ||
-        ageOn(values.dateOfBirth) < 18
+        ageOn(values.dateOfBirth) < 17
       )
         errors.dateOfBirth =
-          "You must be at least 18 years old and use a past date.";
+          "You must be at least 17 years old and use a past date.";
       if (!values.gender) errors.gender = "Please select your gender.";
       if (
         !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,20}$/.test(
@@ -263,9 +263,7 @@
       return toISODate(date);
     });
     let selectedSlot = null;
-  const bookedSlots = get(KEYS.bookings, []).filter(
-    (booking) => booking.status === "Confirmed",
-  );
+    const bookedSlots = get(KEYS.bookings, []);
     const slotGrid = dates
       .map(
         (date) =>
@@ -364,7 +362,7 @@
       )
         return (message.textContent = "Invalid or expired promo code.");
       promoCode = code;
-      discount = code === "SAVE10" ? doctor.fee * 0.1 : 50;
+      discount = code === "SAVE10" ? 10 : 50;
       promoApplied = true;
       input.disabled = true;
       document.querySelector("#apply-promo").disabled = true;
@@ -388,7 +386,7 @@
           );
           valid = false;
         }
-        if (!/^(010|011|012|015)\d{8}$/.test(patientPhone)) {
+        if (!/^(010|011|012|013|015)\d{8}$/.test(patientPhone)) {
           setError("patient-phone", "Enter an 11-digit Egyptian number.");
           valid = false;
         }
@@ -431,7 +429,6 @@
     if (
       bookings.some(
         (booking) =>
-          booking.status === "Confirmed" &&
           booking.doctorId === doctor.id &&
             booking.date === pending.date &&
             booking.time === pending.time,
@@ -461,7 +458,7 @@
       set(KEYS.bookings, bookings);
       localStorage.removeItem(KEYS.pending);
       document.querySelector("#receipt-details").innerHTML =
-        `<p><strong>Booking ID:</strong> #${booking.reference}</p><p><strong>${booking.doctorName}</strong><br>${booking.date} · ${booking.time}</p><p>${booking.clinicAddress}</p><p><strong>${booking.total} EGP</strong> · ${booking.paymentMethod}</p>`;
+        `<p><strong>Booking ID:</strong> #${booking.reference}</p><p><strong>Patient:</strong> ${user?.name || booking.patientName}</p><p><strong>${booking.doctorName}</strong><br>${booking.date} · ${booking.time}</p><p>${booking.clinicAddress}</p><p><strong>${booking.total} EGP</strong> · ${booking.paymentMethod}</p>`;
       document
         .querySelector("#confirmation-modal")
         .classList.remove("is-hidden");
