@@ -426,10 +426,10 @@
         return;
       }
       const bookings = get(KEYS.bookings, []);
-    if (
-      bookings.some(
-        (booking) =>
-          booking.doctorId === doctor.id &&
+      if (
+        bookings.some(
+          (booking) =>
+            booking.doctorId === doctor.id &&
             booking.date === pending.date &&
             booking.time === pending.time,
         )
@@ -482,9 +482,7 @@
     const empty = (text) => `<div class="empty-state"><p>${text}</p></div>`;
     const card = (booking) => {
       const appointment = appointmentDate(booking),
-        cancellable =
-          booking.status === "Confirmed" &&
-          appointment.getTime() - Date.now() > 24 * 60 * 60 * 1000,
+        cancellable = booking.status === "Confirmed",
         disabledTitle =
           "Cancellations are only allowed up to 24 hours before the appointment.";
       return `<article class="booking-card"><div><p class="specialty">${booking.specialty}</p><h2>${booking.doctorName}</h2><p>${booking.clinicAddress || booking.clinic}</p>${booking.reference ? `<p class="booking-reference">#${booking.reference}</p>` : ""}</div><div class="booking-meta"><strong>${booking.date}</strong><span>${booking.time}</span><span class="status ${booking.status === "Cancelled" ? "status--cancelled" : ""}">${booking.status}</span></div>${booking.status === "Confirmed" ? `<button class="button button--danger" data-cancel="${booking.id}" ${cancellable ? "" : `disabled title="${disabledTitle}"`}>Cancel booking</button>` : ""}</article>`;
