@@ -350,23 +350,46 @@
       .querySelectorAll('input[name="payment"]')
       .forEach((input) => input.addEventListener("change", updateCardFields));
     document.querySelector("#apply-promo").addEventListener("click", () => {
-      const input = document.querySelector("#promo-code"),
-        message = document.querySelector("#promo-message"),
-        code = input.value.trim().toUpperCase();
-      if (promoApplied)
+      const input = document.querySelector("#promo-code");
+      const message = document.querySelector("#promo-message");
+      const code = input.value.trim().toUpperCase();
+
+      if (promoApplied) {
+        message.style.color = "#dc2626";
         return (message.textContent =
           "A promo code has already been applied to this booking.");
+      }
+
+      // Allow alphanumeric characters and hyphens (-) up to 15 characters
       if (
-        !/^[A-Z0-9]{1,10}$/.test(code) ||
-        !["SAVE10", "FLAT50"].includes(code)
-      )
+        !/^[A-Z0-9-]{1,15}$/.test(code) ||
+        !["SAVE10", "FLAT50", "BEST-QA"].includes(code)
+      ) {
+        message.style.color = "#dc2626";
         return (message.textContent = "Invalid or expired promo code.");
+      }
+
       promoCode = code;
-      discount = code === "SAVE10" ? 10 : 50;
       promoApplied = true;
+
+      // Calculate discount based on code
+      if (code === "BEST-QA") {
+        discount = currentBookingFee; // 100% discount
+        message.style.color = "#16a34a";
+        message.textContent =
+          "Discount Applied! You are officially the best QA team. 🎉";
+      } else if (code === "SAVE10") {
+        discount = 10; // Intentional bug logic: flat $10
+        message.style.color = "#16a34a";
+        message.textContent = "SAVE10 applied successfully.";
+      } else if (code === "FLAT50") {
+        discount = 50;
+        message.style.color = "#16a34a";
+        message.textContent = "FLAT50 applied successfully.";
+      }
+
       input.disabled = true;
       document.querySelector("#apply-promo").disabled = true;
-      message.textContent = `${code} applied successfully.`;
       draw();
     });
     document.querySelector("#confirm-booking").addEventListener("click", () => {
