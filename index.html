@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CareNest | Sign in</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="auth-page">
+  <main class="auth-layout">
+    <section class="auth-intro">
+      <a class="brand brand--light" href="index.html">Care<span>Nest</span></a>
+      <div><p class="eyebrow">Healthcare made simple</p><h1>Feel better, starting with the right care.</h1><p>Find trusted specialists and book an appointment in minutes.</p></div>
+      <div class="trust-row"><span>✓ Verified doctors</span><span>✓ Easy scheduling</span></div>
+    </section>
+    <section class="auth-card-wrap">
+      <div class="auth-card">
+        <div class="form-tabs" role="tablist"><button class="tab-button is-active" data-form-target="login-form">Sign in</button><button class="tab-button" data-form-target="signup-form">Create account</button></div>
+        <form id="login-form" class="auth-form" data-auth-form="login">
+          <h2>Welcome back</h2><p>Sign in to manage your appointments.</p>
+          <label>Email<input type="email" name="email" placeholder="you@example.com" required></label>
+          <label>Password<input type="password" name="password" placeholder="••••••••" required></label>
+          <button class="button button--primary" type="submit">Sign in</button>
+          <p class="form-message" aria-live="polite"></p>
+          <p class="form-hint">Demo: patient@carenest.com / patient123</p>
+        </form>
+        <form id="signup-form" class="auth-form is-hidden" data-auth-form="signup">
+          <h2>Create your account</h2><p>Your care journey begins here.</p>
+          <label>Full name<input type="text" name="name" placeholder="Your full name" required></label>
+          <label>Email<input type="email" name="email" placeholder="you@example.com" required></label>
+          <label>Password<input type="password" name="password" minlength="6" placeholder="At least 6 characters" required></label>
+          <button class="button button--primary" type="submit">Create account</button><p class="form-message" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script src="assets/js/data.js"></script><script src="assets/js/main.js"></script>
+</body>
+</html>
